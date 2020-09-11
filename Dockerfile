@@ -1,16 +1,18 @@
-ARG COMMIT="5f685e5"
-ARG tool_version="2.6.1"
+#ARG COMMIT="5f685e5"
+#ARG tool_version="2.6.1"
 # py-crypto decprecated in 3.12
 FROM alpine:3.11
-LABEL maintainer=cincan.io
+#LABEL maintainer=cincan.io
+#Based on the work of cincan.io, all credit to them for original Dockerfile
+LABEL maintainer="chris.bensch@gmail.com"
 
-ARG tool_version
-ARG COMMIT
-ENV TOOL_VERSION="$tool_version - $COMMIT"
-ENV YARA_VERSION 3.11.0
-ENV YARA_PY_VERSION 3.11.0
+#ARG tool_version
+#ARG COMMIT
+#ENV TOOL_VERSION="$tool_version - $COMMIT"
+#ENV YARA_VERSION 3.11.0
+#ENV YARA_PY_VERSION 3.11.0
 
-RUN echo "$TOOL_VERSION"
+#RUN echo "$TOOL_VERSION"
 
 RUN apk --update --no-cache add \
     bison \
@@ -62,7 +64,8 @@ RUN apk add --no-cache -t build-dependencies \
     && set -x \
     && cd /tmp \
     && echo "===> Installing Yara from source..." \
-    && git clone --recursive --branch v$YARA_VERSION https://github.com/VirusTotal/yara.git \
+    #&& git clone --recursive --branch v$YARA_VERSION https://github.com/VirusTotal/yara.git \
+    && git clone --recursive https://github.com/VirusTotal/yara.git \
     && cd /tmp/yara \
     && ./bootstrap.sh \
     && sync \
@@ -74,7 +77,8 @@ RUN apk add --no-cache -t build-dependencies \
     && make install \
     && echo "===> Installing yara-python from source..." \
     && cd /tmp/ \
-    && git clone --recursive --branch v$YARA_PY_VERSION https://github.com/VirusTotal/yara-python \
+    #&& git clone --recursive --branch v$YARA_PY_VERSION https://github.com/VirusTotal/yara-python \
+    && git clone --recursive https://github.com/VirusTotal/yara-python \
     && cd yara-python \
     && python setup.py build --dynamic-linking \
     && python setup.py install \
@@ -82,7 +86,7 @@ RUN apk add --no-cache -t build-dependencies \
     && cd /tmp/ \
     && git clone --recursive https://github.com/volatilityfoundation/volatility.git \
     && cd volatility \
-    && git checkout $COMMIT \
+    #&& git checkout $COMMIT \
     && python setup.py build install \
     && rm -rf /tmp/* \
     && apk del --purge build-dependencies
