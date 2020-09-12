@@ -5,6 +5,8 @@ case "$1" in
     /usr/local/bin/auto_vol.py "${@:2}" ;;
   vol|vol.py)
     /usr/bin/vol.py "${@:2}" ;;
+  shell)
+    /bin/sh;;
   "")
     /usr/bin/vol.py "${@:2}" ;;
   *)
