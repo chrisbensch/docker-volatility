@@ -77,12 +77,14 @@ RUN apk add --no-cache -t build-dependencies \
     && apk del --purge build-dependencies
 
 RUN adduser -s /sbin/login -D appuser
-USER appuser
 
-WORKDIR /home/appuser/
+WORKDIR /usr/local/bin
 COPY "vol-switch.sh" "vol-switch.sh"
-RUN chmod a+x vol-switch.sh
+RUN chmod +x vol-switch.sh
+COPY "auto_vol.py" "auto_vol.py"
+RUN chmod +x auto_vol.py
 
-#ENTRYPOINT ["vol.py"]
-ENTRYPOINT ["/bin/bash"]
-#CMD ["--help"]
+USER appuser
+WORKDIR /home/appuser/
+
+ENTRYPOINT ["/usr/local/bin/vol-switch.sh"]
