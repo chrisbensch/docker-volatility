@@ -80,6 +80,9 @@ RUN adduser -s /sbin/login -D appuser
 USER appuser
 
 WORKDIR /home/appuser/
+COPY "vol-switch.sh" "vol-switch.sh"
+RUN chmod a+x vol-switch.sh
 
-ENTRYPOINT ["vol.py"]
-CMD ["--help"]
+#ENTRYPOINT ["vol.py"]
+ENTRYPOINT ["/bin/bash"]
+#CMD ["--help"]
